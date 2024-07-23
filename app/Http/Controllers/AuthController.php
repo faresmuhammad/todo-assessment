@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
@@ -54,5 +55,14 @@ class AuthController extends Controller
         session()->invalidate();
         session()->regenerateToken();
         return new JsonResponse(['message' => 'You are now logged out']);
+    }
+
+    /**
+     * Return user resource if authenticated to check in frontend
+     * @return JsonResponse
+     */
+    public function user()
+    {
+        return response()->json(['user' => auth()->check() ? new UserResource(auth()->user()) : null]);
     }
 }

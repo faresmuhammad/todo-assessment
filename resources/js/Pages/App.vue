@@ -1,13 +1,11 @@
 <template>
-    <router-link :to="{name: 'test'}">Test</router-link>
+<h1>App Page</h1>
+    <button @click="logout">Logout</button>
 </template>
 <script setup>
+import {useAuthentication} from "../composables/authentication.js";
 
-import {onMounted} from "vue";
-
-onMounted(()=>{
-    console.log("App mounted")
-})
+const {logout} = useAuthentication()
 </script>
 
 <style scoped>

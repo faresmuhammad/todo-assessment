@@ -9,10 +9,11 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 });
 
+Route::get('user', [AuthController::class, 'user']);
 
-Route::post('logout', [AuthController::class, 'logout'])->middleware('auth:session');
+Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
 
-Route::middleware('auth.session')->controller(TaskController::class)->group(function () {
+Route::middleware('auth')->controller(TaskController::class)->group(function () {
     Route::get('tasks', 'index');
     Route::get('tasks/{task}', 'show');
     Route::post('tasks', 'store');

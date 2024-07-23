@@ -15,6 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         //Applying HandleCors middleware globally
         $middleware->append( HandleCors::class);
+
+        $middleware->appendToGroup('api',[
+           \Illuminate\Cookie\Middleware\EncryptCookies::class,
+           \Illuminate\Session\Middleware\StartSession::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
