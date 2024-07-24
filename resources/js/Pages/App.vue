@@ -1,20 +1,18 @@
 <template>
+    <nav-bar></nav-bar>
+    <div class="container my-4">
+        <div class="d-flex flex-column">
+            <action-bar></action-bar>
+            <task-list></task-list>
+        </div>
 
-    <div class="container">
-        <task-list></task-list>
-        <button @click="logout">Logout</button>
     </div>
 </template>
 <script setup>
-import {useAuthentication} from "../composables/authentication.js";
-import {onMounted, ref, watch} from "vue";
 import TaskList from "../Components/TaskList.vue";
-import {BaseUrl} from "../constants.js";
-import {useTasks} from "../composables/tasks.js";
+import NavBar from "../Components/NavBar.vue";
+import ActionBar from "../Components/ActionBar.vue";
 
-const {logout} = useAuthentication()
-onMounted(() => {
-})
 
 </script>
 

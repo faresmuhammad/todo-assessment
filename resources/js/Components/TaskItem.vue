@@ -17,7 +17,7 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex flex-column justify-content-between align-items-end">
-                        <span>{{ task.due_date === null ? 'No Due Date' : task.due_date }}</span>
+                        <span>{{ task.due_date === null ? 'No Due Date' : 'Due to: ' + task.due_date }}</span>
                         <tag :name="task.status" class="my-2" />
                         <div class="btn-group">
                             <!--Open Edit Dialog-->

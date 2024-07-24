@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TaskController;
+use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -20,4 +21,8 @@ Route::middleware('auth')->controller(TaskController::class)->group(function () 
     Route::put('tasks/{task}', 'update');
     Route::delete('tasks/{task}', 'delete');
     Route::patch('tasks/{id}/restore', 'restore');
+});
+
+Route::get('categories', function () {
+    return Category::select('id as value', 'name as text')->get();
 });
