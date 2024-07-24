@@ -18,6 +18,7 @@ Route::middleware('auth')->controller(TaskController::class)->group(function () 
     Route::get('tasks', 'index');
     Route::get('tasks/trashed', 'trashed');
     Route::get('tasks/{task}', 'show');
+    Route::get('tasks/search/{search}', 'search');
     Route::post('tasks', 'store');
     Route::put('tasks/{task}', 'update');
     Route::delete('tasks/{task}', 'delete');

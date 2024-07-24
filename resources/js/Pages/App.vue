@@ -12,10 +12,8 @@
 import TaskList from "../Components/TaskList.vue";
 import NavBar from "../Components/NavBar.vue";
 import ActionBar from "../Components/ActionBar.vue";
+import {useTasks} from "../composables/tasks.js";
 
 
 </script>
 
-<style scoped>
-
-</style>

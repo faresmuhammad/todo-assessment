@@ -9,7 +9,7 @@
         <div class="col-4">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search ..." v-model="searchQuery"/>
-                <button class="btn btn-outline-dark" @click="$emit('search',searchQuery)">Search</button>
+                <button class="btn btn-outline-dark" @click="emitter.emit('searchClicked',searchQuery)">Search</button>
             </div>
         </div>
 
@@ -19,16 +19,17 @@
 
                 <div class="input-group">
                     <label for="filter-select" class="input-group-text">Filter</label>
-                    <select class="form-select" v-model="filterType" id="filter-select" @change="getFilterOptions">
+                    <select class="form-select" v-model="filter.type" id="filter-select" @change="getFilterOptions">
                         <option selected>None</option>
-                        <option value="Status">Status</option>
-                        <option value="Category">Category</option>
+                        <option value="status">Status</option>
+                        <option value="category_id">Category</option>
                     </select>
                 </div>
-                <div v-if="filterType !== 'None'" class="input-group">
+                <div v-if="filter.type !== 'None'" class="input-group">
                     <label for="filter-options" class="input-group-text">Options</label>
-                    <select class="form-select" v-model="appliedFilter" id="filter-options" @change="applyFilter">
-                        <option v-for="option in filterOptions" :value="option.value">{{ option.text }}</option>
+                    <select class="form-select" v-model="filter.option" id="filter-options"
+                            @change="emitter.emit('filterApplied',filter)">
+                        <option v-for="option in filterOptions" :value="option">{{ option.text }}</option>
                     </select>
                 </div>
             </div>
@@ -39,9 +40,9 @@
             <div class="d-flex flex-column">
 
                 <div class="input-group"><label for="sort-select" class="input-group-text">Sort</label>
-                    <select class="form-select" v-model="sortType" id="sort-select" >
+                    <select class="form-select" v-model="sortType" id="sort-select">
                         <option selected>None</option>
-                        <option value="duedate">Due Date</option>
+                        <option value="due_date">Due Date</option>
                     </select>
                 </div>
             </div>
@@ -54,33 +55,34 @@
 </template>
 <script setup>
 
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 import {BaseUrl} from "../constants.js";
+import {emitter} from "../emitter.js";
 
 const searchQuery = ref("")
 
-const filterType = ref("None")
+const filter = reactive({
+    type: "None",
+    option: null
+})
 const filterOptions = ref([])
-const appliedFilter = ref()
 
 
 const sortType = ref("None")
 const getFilterOptions = async () => {
-    if (filterType.value === "Status") {
+    if (filter.type === "status") {
         filterOptions.value = [
             {value: 0, text: "pending"},
             {value: 0, text: "completed"},
         ]
-    } else if (filterType.value === "Category") {
+    } else if (filter.type === "category_id") {
         //Get categories from database with format of {value (id), text (name)}
         filterOptions.value = (await axios.get(BaseUrl + '/categories')).data
+        console.log("filter options: ",filterOptions.value)
     } else
         filterOptions.value = []
 }
 
-const applyFilter = () => {
-
-}
 </script>
 
 

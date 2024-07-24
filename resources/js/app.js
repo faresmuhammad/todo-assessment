@@ -5,13 +5,16 @@ import {createApp} from "vue";
 import router from "./router.js";
 import {createPinia} from "pinia";
 import {useAuthStore} from "./stores/auth.js";
+import mitt from "mitt";
+import {emitter} from "./emitter.js";
 
 const pinia = createPinia()
 const app = createApp({})
 
+app.use(router).use(pinia)
+app.config.globalProperties.emitter = emitter
 
-app.use(pinia).use(router)
-    .mount('#app')
+app.mount('#app')
 
 
 const authStore = useAuthStore()

@@ -8,6 +8,7 @@ use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class TaskController extends Controller
@@ -105,5 +106,17 @@ class TaskController extends Controller
         $task = Task::onlyTrashed()->find($id);
         $task->restore();
         return response(null, 204);
+    }
+
+    /**
+     * Return results that query matches title or description
+     * @param string $query
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function search(string $query)
+    {
+        $results = Task::where('title', 'LIKE', "%{$query}%")
+            ->orWhere('description', 'LIKE', "%{$query}%")->paginate(5);
+        return TaskResource::collection($results);
     }
 }
