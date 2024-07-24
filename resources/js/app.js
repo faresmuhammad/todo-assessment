@@ -1,4 +1,6 @@
 import './bootstrap';
+import * as bootstrap from 'bootstrap'
+
 import {createApp} from "vue";
 import router from "./router.js";
 import {createPinia} from "pinia";
@@ -18,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
     // check user authenticated
     await authStore.checkUserAuthenticated()
 
-    if (to.meta.requireAuth && !authStore.isAuthenticated) next({name: 'login'})
+    if (to.meta.requireAuth && !authStore.isAuthenticated || to.name === 'register') next({name: 'login'})
     else if (authStore.isAuthenticated && to.name === 'login' || to.name === 'register') next({name: 'app'})
     else next()
 })

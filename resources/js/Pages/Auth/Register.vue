@@ -1,9 +1,9 @@
 <template>
     <form method="post" @submit.prevent="register(data)">
 
-        <div class="field">
-            <label for="name">Name</label>
-            <input type="text" name="name" v-model="data.name" required>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" v-model="data.name" required>
         </div>
         <div class="field">
             <label for="email">Email</label>

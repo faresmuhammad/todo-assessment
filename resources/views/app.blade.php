@@ -9,10 +9,10 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet"/>
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/app.js','resources/sass/app.scss'])
 
 </head>
-<body class="font-sans antialiased dark:bg-black dark:text-white/50">
+<body>
 <div id="app">
     <router-view></router-view>
 </div>
