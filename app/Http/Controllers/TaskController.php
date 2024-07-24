@@ -6,6 +6,9 @@ use App\Http\Requests\NewTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use Illuminate\Contracts\Routing\ResponseFactory;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\Response;
 
 class TaskController extends Controller
 {
@@ -19,6 +22,15 @@ class TaskController extends Controller
         return TaskResource::collection($tasks);
     }
 
+    /**
+     * Return paginated soft deleted tasks for the authenticated user
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function trashed()
+    {
+        $tasks = Task::onlyTrashed()->where('user_id', auth()->id())->paginate(5);
+        return TaskResource::collection($tasks);
+    }
 
     /**
      * Return a task by id
@@ -29,6 +41,7 @@ class TaskController extends Controller
     {
         return new TaskResource($task);
     }
+
     /**
      * Sava a new task in the database
      * @param NewTaskRequest $request
@@ -46,7 +59,8 @@ class TaskController extends Controller
      * @param Task $task
      * @return TaskResource
      */
-    public function update(UpdateTaskRequest $request, Task $task){
+    public function update(UpdateTaskRequest $request, Task $task)
+    {
         $validated = $request->validated();
         $task->update([
             'title' => $validated['title'] ?? $task->title,
@@ -70,9 +84,21 @@ class TaskController extends Controller
     }
 
     /**
+     * Delete a task permanently
+     * @param $id
+     * @return ResponseFactory|Application|Response
+     */
+    public function forceDelete($id)
+    {
+        $task = Task::onlyTrashed()->find($id);
+        $task->forceDelete();
+        return response(null, 204);
+    }
+
+    /**
      * Restore a single soft deleted task
-     * @param Task $task
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Foundation\Application|\Illuminate\Http\Response
+     * @param $id
+     * @return ResponseFactory|Application|Response
      */
     public function restore($id)
     {

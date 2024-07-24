@@ -3,9 +3,8 @@
         <div class="container">
             <router-link class="navbar-brand" :to="{name:'app'}">To-Do INVADE</router-link>
             <ul class="nav me-auto mb-2 ">
-                <!--todo: change proper routes-->
                 <li class="nav-item"> <router-link class="nav-link" :to="{name: 'app'}">Tasks</router-link></li>
-                <li class="nav-item"> <router-link class="nav-link" :to="{name: 'app'}">Trash</router-link></li>
+                <li class="nav-item"> <router-link class="nav-link" :to="{name: 'trashed'}">Trash</router-link></li>
             </ul>
             <button class="btn btn-primary" @click="logout">Logout</button>
         </div>

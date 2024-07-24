@@ -23,9 +23,9 @@ class UpdateTaskRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'description' => 'string',
+            'description' => 'string|nullable',
             'status' => 'required|string',
-            'due_date' => 'date',
+            'due_date' => 'date|nullable',
             'category_id' => 'integer',
         ];
     }

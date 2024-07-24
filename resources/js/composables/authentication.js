@@ -42,7 +42,6 @@ export const useAuthentication = () => {
     const logout = async () => {
         try {
             const response = await axios.post(BaseUrl + '/logout')
-            // await useAuthStore().checkUserAuthenticated()
             await router.push({name: 'login'})
         } catch (e) {
             console.error(e)

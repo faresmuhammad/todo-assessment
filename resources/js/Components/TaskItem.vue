@@ -19,11 +19,19 @@
                     <div class="col-3 d-flex flex-column justify-content-between align-items-end">
                         <span>{{ task.due_date === null ? 'No Due Date' : 'Due to: ' + task.due_date }}</span>
                         <tag :name="task.status" class="my-2"/>
-                        <div class="btn-group">
+
+                        <!--Action Buttons Section-->
+                        <div v-if="trashed" class="btn-group">
+                            <!--Call restore endpoint-->
+                            <button class="btn btn-success mx-1" @click="restoreTask">Restore</button>
+                            <!--Call permanent delete endpoint-->
+                            <button class="btn btn-danger mx-1" @click="deleteTaskPermanently">Delete Forever</button>
+                        </div>
+                        <div v-else class="btn-group">
                             <!--Open Edit Page-->
                             <button class="btn btn-warning mx-1" @click="navigateToEditPage">Edit</button>
                             <!--Call delete endpoint-->
-                            <button class="btn btn-danger mx-1">Delete</button>
+                            <button class="btn btn-danger mx-1" @click="deleteTask">Delete</button>
                         </div>
                     </div>
                 </div>
@@ -35,13 +43,49 @@
 <script setup>
 import Tag from "./Tag.vue";
 import router from "../router.js";
+import axios from "axios";
+import {BaseUrl} from "../constants.js";
 
 const props = defineProps({
-    task: Object
+    task: Object,
+    trashed: {
+        type: Boolean,
+        default: false
+    }
 })
 
 const navigateToEditPage = () => {
     router.push({name: 'edit-task', params: {id: props.task.id}})
+}
+
+const deleteTask = async () => {
+    try {
+        await axios.delete(BaseUrl + '/tasks/' + props.task.id)
+        //Refresh the page
+        router.go()
+    } catch (e) {
+
+    }
+}
+
+const deleteTaskPermanently = async () => {
+    try {
+        await axios.delete(BaseUrl + '/tasks/' + props.task.id + '/permanent')
+        //Refresh the page
+        router.go()
+    } catch (e) {
+
+    }
+}
+
+const restoreTask = async () => {
+    try {
+        await axios.patch(BaseUrl + '/tasks/' + props.task.id + '/restore')
+        //Refresh the page
+        router.go()
+    } catch (e) {
+
+    }
 }
 </script>
 

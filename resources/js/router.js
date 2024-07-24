@@ -4,6 +4,7 @@ import Register from "./Pages/Auth/Register.vue";
 import Login from "./Pages/Auth/Login.vue";
 import NewTask from "./Pages/Task.vue";
 import Task from "./Pages/Task.vue";
+import TrashedTasks from "./Pages/TrashedTasks.vue";
 
 
 const routes = [
@@ -24,6 +25,10 @@ const routes = [
         meta: {requireAuth: true}
     },
     {
+        path: '/tasks',
+        redirect: '/'
+    },
+    {
         path: '/tasks/new',
         name: 'new-task',
         component: Task,
@@ -34,7 +39,14 @@ const routes = [
         name: 'edit-task',
         component: Task,
         meta: {requireAuth: true}
+    },
+    {
+        path: '/tasks/trashed',
+        name: 'trashed',
+        component: TrashedTasks,
+        meta: {requireAuth: true}
     }
+
 ]
 
 const router = createRouter({

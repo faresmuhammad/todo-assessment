@@ -1,10 +1,10 @@
 <template>
     <div class="container min-vh-100">
-        <div class="row min-vh-100 justify-content-center align-items-center ">
+        <div class="row min-vh-100 justify-content-center align-items-center">
             <div class="card p-4 col-10">
-                <h3 class="text-center">{{ route.params.id ? 'Update Task' : 'New Task'}}</h3>
+                <h3 class="text-center">{{ route.params.id ? 'Update Task' : 'New Task' }}</h3>
 
-                <form method="post" @submit.prevent="saveTask" class="d-flex flex-column gap-4 my-auto">
+                <form method="post" @submit.prevent="submitForm" class="d-flex flex-column gap-4 my-auto">
 
                     <!--Title Field-->
                     <div class="input-group">
@@ -61,6 +61,7 @@ import router from "../router.js";
 import {useRoute} from "vue-router";
 
 const route = useRoute()
+
 const categories = ref([])
 const task = ref({})
 const data = reactive({
@@ -69,23 +70,23 @@ const data = reactive({
     status: "pending",
     //todo: implement conversion between js date and carbon date
     due_date: null,
-    category_id: 0
+    category_id: 1
 })
+
+const isNewTask = ref(true)
 
 onMounted(async () => {
     //Get categories list
     categories.value = (await axios.get(BaseUrl + '/categories')).data
     try {
+        //check if there is incoming task id to update
         if (route.params.id) {
-
+            //Set isNewTask to false
+            isNewTask.value = false
             //Get Task from the passed id parameter to fill form fields
             task.value = (await axios.get(BaseUrl + '/tasks/' + route.params.id)).data.data
             //Fill form data with task
-            data.title = task.value.title
-            data.description = task.value.description
-            data.status = task.value.status
-            data.category_id = task.value.category.id
-            console.log(task.value)
+            fillTaskData()
         }
 
     } catch (e) {
@@ -95,7 +96,6 @@ onMounted(async () => {
 })
 const saveTask = async () => {
     try {
-
         const resposnse = await axios.post(BaseUrl + '/tasks', {
             ...data,
             user_id: useAuthStore().user.id
@@ -105,6 +105,29 @@ const saveTask = async () => {
     } catch (e) {
         console.error(e)
     }
+}
+const updateTask = async () => {
+    try {
+        const resposnse = await axios.put(BaseUrl + '/tasks/' + task.value.id, data)
+        console.log("Task updated successfully")
+        router.back()
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+const submitForm = () => {
+    if (isNewTask.value)
+        saveTask()
+    else
+        updateTask()
+}
+
+const fillTaskData = () => {
+    data.title = task.value.title
+    data.description = task.value.description
+    data.status = task.value.status
+    data.category_id = task.value.category.id
 }
 </script>
 
