@@ -20,7 +20,8 @@ router.beforeEach(async (to, from, next) => {
     // check user authenticated
     await authStore.checkUserAuthenticated()
 
-    if (to.meta.requireAuth && !authStore.isAuthenticated || to.name === 'register') next({name: 'login'})
-    else if (authStore.isAuthenticated && to.name === 'login' || to.name === 'register') next({name: 'app'})
-    else next()
+    if (to.meta.requireAuth) {
+        if (!authStore.isAuthenticated) next({name: 'login'})
+        else next()
+    } else next()
 })

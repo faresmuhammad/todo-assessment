@@ -11,8 +11,16 @@
                 <label for="password" class="form-label">Password</label>
                 <input type="password" class="form-control" name="password" v-model="data.password" required>
             </div>
+            <div class="form-check">
+                <input type="checkbox" name="remember" v-model="data.remember" class="form-check-input">
+                <label for="remember" class="form-check-label">Remember me</label>
+            </div>
             <button type="submit" class="btn btn-primary" style="display: block">Login</button>
         </form>
+        <div class="my-3 text-center">
+            <span>Not a member? </span>
+            <router-link :to="{name: 'register'}">Register</router-link>
+        </div>
     </div>
 
 </template>
@@ -33,6 +41,3 @@ const data = reactive({
 </script>
 
 
-<style scoped>
-
-</style>
