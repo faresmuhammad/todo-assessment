@@ -15,8 +15,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //todo: get tasks for the authenticated user
-        $tasks = Task::paginate(5);
+        $tasks = auth()->user()->tasks()->paginate(5);
         return TaskResource::collection($tasks);
     }
 

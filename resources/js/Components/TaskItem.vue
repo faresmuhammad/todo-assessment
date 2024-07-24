@@ -13,15 +13,15 @@
                         <div class="d-flex flex-column">
                             <h6>{{ task.title }}</h6>
                             <div class="text-muted">{{ task.description }}</div>
-                            <tag :name="task.category" class="my-2 w-25" />
+                            <tag :name="task.category.name" class="my-2 w-25"/>
                         </div>
                     </div>
                     <div class="col-3 d-flex flex-column justify-content-between align-items-end">
                         <span>{{ task.due_date === null ? 'No Due Date' : 'Due to: ' + task.due_date }}</span>
-                        <tag :name="task.status" class="my-2" />
+                        <tag :name="task.status" class="my-2"/>
                         <div class="btn-group">
-                            <!--Open Edit Dialog-->
-                            <button class="btn btn-warning mx-1">Edit</button>
+                            <!--Open Edit Page-->
+                            <button class="btn btn-warning mx-1" @click="navigateToEditPage">Edit</button>
                             <!--Call delete endpoint-->
                             <button class="btn btn-danger mx-1">Delete</button>
                         </div>
@@ -34,10 +34,15 @@
 </template>
 <script setup>
 import Tag from "./Tag.vue";
+import router from "../router.js";
 
 const props = defineProps({
     task: Object
 })
+
+const navigateToEditPage = () => {
+    router.push({name: 'edit-task', params: {id: props.task.id}})
+}
 </script>
 
 

@@ -17,7 +17,8 @@
         <div class="col-2">
             <div class="d-flex flex-column">
 
-                <div class="input-group"><label for="filter-select" class="input-group-text">Filter</label>
+                <div class="input-group">
+                    <label for="filter-select" class="input-group-text">Filter</label>
                     <select class="form-select" v-model="filterType" id="filter-select" @change="getFilterOptions">
                         <option selected>None</option>
                         <option value="Status">Status</option>
@@ -32,9 +33,22 @@
                 </div>
             </div>
         </div>
+
+        <!--Sorting Section-->
+        <div class="col-2">
+            <div class="d-flex flex-column">
+
+                <div class="input-group"><label for="sort-select" class="input-group-text">Sort</label>
+                    <select class="form-select" v-model="sortType" id="sort-select" >
+                        <option selected>None</option>
+                        <option value="duedate">Due Date</option>
+                    </select>
+                </div>
+            </div>
+        </div>
         <!--New Task Button-->
         <div class="col-2 d-inline-flex justify-content-end">
-            <button class="btn btn-primary">New Task</button>
+            <router-link :to="{name:'new-task'}" class="btn btn-primary">New Task</router-link>
         </div>
     </div>
 </template>
@@ -48,6 +62,9 @@ const searchQuery = ref("")
 const filterType = ref("None")
 const filterOptions = ref([])
 const appliedFilter = ref()
+
+
+const sortType = ref("None")
 const getFilterOptions = async () => {
     if (filterType.value === "Status") {
         filterOptions.value = [

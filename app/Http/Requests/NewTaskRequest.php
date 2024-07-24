@@ -23,9 +23,9 @@ class NewTaskRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'description' => 'string',
+            'description' => 'string|nullable',
             'status' => 'required|string',
-            'due_date' => 'date',
+            'due_date' => 'date|nullable',
             'user_id' => 'required|integer',
             'category_id' => 'integer',
         ];
