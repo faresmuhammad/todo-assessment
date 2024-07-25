@@ -26,7 +26,7 @@ php artisan key:generate
 ```bash
 composer install
 
-npm instll
+npm install
 ```
 4. After running Apache server and MySQL, create a new database `todo`
 
