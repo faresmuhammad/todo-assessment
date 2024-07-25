@@ -1,6 +1,22 @@
 # To-Do App
 
+### Development Environment
 
+- **OS:** Ubuntu
+- **PHP Version:** 8.2
+- **XAMPP for linux:** 8.2.12
+
+### Technologies Used
+
+- **Backend:** Laravel 11
+- **Frontend:**
+    - VueJs
+    - Vue Router
+    - Bootstrap CSS Framework
+    - Pinia for global state managemnet
+    - Mitt event emitter for event handling globally
+
+  
 ### Installation
 
 1. Clone the repository
