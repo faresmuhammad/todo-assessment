@@ -17,7 +17,9 @@
                         </div>
                     </div>
                     <div class="col-3 d-flex flex-column justify-content-between align-items-end">
-                        <span>{{ task.due_date === null ? 'No Due Date' : 'Due to: ' + task.due_date }}</span>
+                        <span>{{
+                                task.due_date === null ? 'No Due Date' : 'Due to: ' + formatDate(task.due_date)
+                            }}</span>
                         <tag :name="task.status" class="my-2"/>
 
                         <!--Action Buttons Section-->
@@ -29,7 +31,9 @@
                         </div>
                         <div v-else class="btn-group">
                             <!--Complete the task-->
-                            <button v-if="task.status === 'pending'" class="btn btn-success mx-1" @click="completeTask">Complete</button>
+                            <button v-if="task.status === 'pending'" class="btn btn-success mx-1" @click="completeTask">
+                                Complete
+                            </button>
                             <!--Open Edit Page-->
                             <button class="btn btn-warning mx-1" @click="navigateToEditPage">Edit</button>
                             <!--Call delete endpoint-->
@@ -56,7 +60,7 @@ const props = defineProps({
     }
 })
 
-const completeTask = async ()=>{
+const completeTask = async () => {
     try {
         await axios.patch(BaseUrl + '/tasks/' + props.task.id + '/complete')
         //Refresh the page
@@ -99,6 +103,31 @@ const restoreTask = async () => {
     } catch (e) {
 
     }
+}
+
+/**
+ * Format a date to readable format
+ */
+const formatDate = (date) => {
+
+    const parsedDate = new Date(date)
+    const now = new Date()
+    const tomorrow = new Date()
+    tomorrow.setDate(now.getDate() + 1)
+
+    let formattedText = ""
+    if (parsedDate.toDateString() === now.toDateString())
+        formattedText = "Today"
+    else if (parsedDate.toDateString() === tomorrow.toDateString())
+        formattedText = "Tomorrow"
+    else
+        formattedText = parsedDate.toLocaleString('en-US', {
+            weekday: 'short',
+            day: 'numeric',
+            year: 'numeric',
+            month: 'short'
+        })
+    return formattedText
 }
 </script>
 

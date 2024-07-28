@@ -68,6 +68,7 @@ class TaskController extends Controller
             'description' => $validated['description'] ?? $task->description,
             'status' => $validated['status'] ?? $task->status,
             'category_id' => $validated['category_id'] ?? $task->category_id,
+            'due_date' => $validated['due_date'] ?? $task->due_date,
             'user_id' => $task->user_id
         ]);
         return new TaskResource($task);

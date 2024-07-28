@@ -59,8 +59,10 @@ import {BaseUrl} from "../constants.js";
 import {useAuthStore} from "../stores/auth.js";
 import router from "../router.js";
 import {useRoute} from "vue-router";
+import {useTasks} from "../composables/tasks.js";
 
 const route = useRoute()
+const {saveTask,updateTask} = useTasks()
 
 const categories = ref([])
 const task = ref({})
@@ -68,7 +70,6 @@ const data = reactive({
     title: "",
     description: null,
     status: "pending",
-    //todo: implement conversion between js date and carbon date
     due_date: null,
     category_id: 1
 })
@@ -94,33 +95,15 @@ onMounted(async () => {
     }
 
 })
-const saveTask = async () => {
-    try {
-        const resposnse = await axios.post(BaseUrl + '/tasks', {
-            ...data,
-            user_id: useAuthStore().user.id
-        })
-        console.log("Task created successfully")
-        router.back()
-    } catch (e) {
-        console.error(e)
-    }
-}
-const updateTask = async () => {
-    try {
-        const resposnse = await axios.put(BaseUrl + '/tasks/' + task.value.id, data)
-        console.log("Task updated successfully")
-        router.back()
-    } catch (e) {
-        console.error(e)
-    }
-}
+
 
 const submitForm = () => {
     if (isNewTask.value)
-        saveTask()
+        saveTask(data)
     else
-        updateTask()
+        updateTask(task.value.id,data)
+
+    router.back()
 }
 
 const fillTaskData = () => {
@@ -128,6 +111,17 @@ const fillTaskData = () => {
     data.description = task.value.description
     data.status = task.value.status
     data.category_id = task.value.category.id
+
+
+    data.due_date = convertToDateInputFormat(task.value.due_date)
+}
+
+/**
+ * due_date value stored in the task is in this format 2024-07-29 00:00:00
+ * date input tag needs the date part only
+ */
+const convertToDateInputFormat = (datetime) => {
+    return datetime.slice(0, 10)
 }
 </script>
 

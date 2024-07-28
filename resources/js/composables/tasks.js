@@ -1,5 +1,7 @@
 import {ref} from "vue";
 import {BaseUrl} from "../constants.js";
+import axios from "axios";
+import {useAuthStore} from "../stores/auth.js";
 
 export const useTasks = () => {
     const tasks = ref([])
@@ -45,7 +47,7 @@ export const useTasks = () => {
                 console.log("filter task: ", task, f.option.text)
                 return task.status === f.option.text
             })
-        }else if (f.type === 'category_id'){
+        } else if (f.type === 'category_id') {
             tasks.value = tasks.value.filter((task) => {
                 console.log("filter task: ", task, f.option.value)
                 return task.category.id === f.option.value
@@ -66,7 +68,39 @@ export const useTasks = () => {
         pageData.value = response.data.meta
     }
 
-    return {tasks, pageData, getTasks, getTrashedTasks, updateTasks, search, filter}
+
+    /**
+     * Store a new task int the database
+     * @param data
+     * @returns {Promise<void>}
+     */
+    const saveTask = async (data) => {
+        try {
+            const resposnse = await axios.post(BaseUrl + '/tasks', {
+                ...data,
+                user_id: useAuthStore().user.id
+            })
+            console.log("Task created successfully")
+        } catch (e) {
+            console.error(e)
+        }
+    }
+
+    /**
+     * Update a task given by id
+     * @param id
+     * @param data
+     * @returns {Promise<void>}
+     */
+    const updateTask = async (id, data) => {
+        try {
+            const resposnse = await axios.put(BaseUrl + '/tasks/' + id, data)
+            console.log("Task updated successfully")
+        } catch (e) {
+            console.error(e)
+        }
+    }
+    return {tasks, pageData, getTasks, getTrashedTasks, updateTasks, search, filter, saveTask, updateTask}
 
 }
 
