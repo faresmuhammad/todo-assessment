@@ -10,20 +10,26 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthController::class, 'login']);
 });
 
+//Get user data if authenticated
 Route::get('user', [AuthController::class, 'user']);
 
 Route::post('logout', [AuthController::class, 'logout'])->middleware('auth');
+
 
 Route::middleware('auth')->controller(TaskController::class)->group(function () {
     Route::get('tasks', 'index');
     Route::get('tasks/trashed', 'trashed');
     Route::get('tasks/{task}', 'show');
     Route::get('tasks/search/{search}', 'search');
+
     Route::post('tasks', 'store');
     Route::put('tasks/{task}', 'update');
+
     Route::delete('tasks/{task}', 'delete');
     Route::delete('tasks/{id}/permanent', 'forceDelete');
+
     Route::patch('tasks/{id}/restore', 'restore');
+    Route::patch('tasks/{task}/complete', 'completeTask');
 });
 
 Route::get('categories', function () {

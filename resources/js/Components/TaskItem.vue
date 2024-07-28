@@ -28,6 +28,8 @@
                             <button class="btn btn-danger mx-1" @click="deleteTaskPermanently">Delete Forever</button>
                         </div>
                         <div v-else class="btn-group">
+                            <!--Complete the task-->
+                            <button v-if="task.status === 'pending'" class="btn btn-success mx-1" @click="completeTask">Complete</button>
                             <!--Open Edit Page-->
                             <button class="btn btn-warning mx-1" @click="navigateToEditPage">Edit</button>
                             <!--Call delete endpoint-->
@@ -53,6 +55,17 @@ const props = defineProps({
         default: false
     }
 })
+
+const completeTask = async ()=>{
+    try {
+        await axios.patch(BaseUrl + '/tasks/' + props.task.id + '/complete')
+        //Refresh the page
+        router.go()
+    } catch (e) {
+
+    }
+
+}
 
 const navigateToEditPage = () => {
     router.push({name: 'edit-task', params: {id: props.task.id}})

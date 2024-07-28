@@ -119,4 +119,17 @@ class TaskController extends Controller
             ->orWhere('description', 'LIKE', "%{$query}%")->paginate(5);
         return TaskResource::collection($results);
     }
+
+    /**
+     * Update status column to 'completed'
+     * @param Task $task
+     * @return TaskResource
+     */
+    public function completeTask(Task $task)
+    {
+        $task->update([
+            'status' => 'completed'
+        ]);
+        return new TaskResource($task);
+    }
 }
